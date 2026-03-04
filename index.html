@@ -211,8 +211,8 @@
         <span class="code-lang">swift</span>
       </div>
       <pre><span class="kw">var</span> <span class="var">result</span> <span class="op">=</span> <span class="num">0</span>
-<span class="kw">for</span> <span class="var">x</span> <span class="kw">in</span> [<span class="num">3</span>, <span class="num">3</span>, <span class="num">5</span>] {
-    <span class="kw">if</span> <span class="var">x</span> <span class="op">><span class="hidden">=</span></span> <span class="num">3</span> {
+<span class="kw">for</span> <span class="var">x</span> <span class="kw">in</span> [<span class="num">3</span>, <span class="num">5</span>, <span class="num">7</span>] {
+    <span class="kw">if</span> <span class="var">x</span> <span class="op">><span class="hidden">=</span></span> <span class="num">5</span> {
         <span class="var">result</span> <span class="op">=</span> <span class="var">result</span> <span class="op">-</span> <span class="var">x</span>
     } <span class="kw">else</span> {
         <span class="var">result</span> <span class="op">=</span> <span class="var">result</span> <span class="op">+</span> <span class="var">x</span>
@@ -239,29 +239,29 @@
   </div>
 
   <script>
-    // The page visually shows: if x > 3
+    // The page visually shows: if x > 5
     // But the HTML contains a hidden "=" (font-size:0 span), so copy-pasting
-    // reveals: if x >= 3
+    // reveals: if x >= 5
     //
     // Careful readers trace the VISUAL code; copy-pasters run the hidden version.
     // Let's trace both:
-    //   Visual code shows: if x > 3  →  only x=5 passes
-    //     iteration 1: x=3, 3>3 false → result = 0+3 = 3
-    //     iteration 2: x=3, 3>3 false → result = 3+3 = 6
-    //     iteration 3: x=5, 5>3 true  → result = 6-5 = 1
+    //   Visual code shows: if x > 5  →  only x=7 passes
+    //     iteration 1: x=3, 3>5 false → result = 0+3 = 3
+    //     iteration 2: x=5, 5>5 false → result = 3+5 = 8
+    //     iteration 3: x=7, 7>5 true  → result = 8-7 = 1
     //   Visual answer: 1
     //
-    //   Copy-paste code shows: if x >= 3 → all pass
-    //     iteration 1: x=3, 3>=3 true  → result = 0-3  = -3
-    //     iteration 2: x=3, 3>=3 true  → result = -3-3 = -6
-    //     iteration 3: x=5, 5>=3 true  → result = -6-5 = -11
+    //   Copy-paste code shows: if x >= 5 → all pass
+    //     iteration 1: x=3, 3>=5 false → result = 0+3  = 3
+    //     iteration 2: x=5, 5>=5 true  → result = 3-5 = -2
+    //     iteration 3: x=7, 7>=5 true  → result = -2-7 = -9
     //   Copy-paste answer: -11
     //
     // The "correct" answer for a reader who does NOT copy-paste is 1.
-    // The "wrong" answer for someone who copies is -11.
+    // The "wrong" answer for someone who copies is -9.
 
     const CORRECT = 1;        // what a careful reader sees
-    const TRAP    = -11;      // what a copy-paster gets
+    const TRAP    = -9;      // what a copy-paster gets
 
     function checkAnswer() {
       const raw = document.getElementById("ans").value.trim();
