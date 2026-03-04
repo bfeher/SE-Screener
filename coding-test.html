@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The 15-Second Coding Test</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .card {
+      background: #1a1d2e;
+      border: 1px solid #2d3148;
+      border-radius: 12px;
+      padding: 2.5rem;
+      max-width: 560px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    .badge {
+      display: inline-block;
+      background: #7c3aed22;
+      border: 1px solid #7c3aed55;
+      color: #a78bfa;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+    }
+
+    h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 0.6rem;
+      color: #f1f5f9;
+    }
+
+    .subtitle {
+      font-size: 0.92rem;
+      color: #94a3b8;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .question {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+    }
+
+    /* Code block */
+    .code-wrap {
+      background: #0d0f1a;
+      border: 1px solid #252840;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1.8rem;
+    }
+
+    .code-header {
+      background: #161929;
+      border-bottom: 1px solid #252840;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-red   { background: #ff5f57; }
+    .dot-yellow{ background: #febc2e; }
+    .dot-green { background: #28c840; }
+
+    .code-lang {
+      margin-left: auto;
+      font-size: 0.72rem;
+      color: #4b5563;
+      font-family: monospace;
+    }
+
+    pre {
+      padding: 1.4rem 1.6rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      font-family: "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+      overflow-x: auto;
+      color: #e2e8f0;
+      tab-size: 4;
+    }
+
+    /* Syntax colours */
+    .kw  { color: #c792ea; } /* keyword: for, if, else */
+    .fn  { color: #82aaff; } /* built-in: result */
+    .num { color: #f78c6c; } /* numbers */
+    .op  { color: #89ddff; } /* operators */
+    .com { color: #546e7a; } /* comments */
+    .var { color: #eeffff; }
+
+    /*
+      THE TRICK:
+      The = in ">=" is wrapped in a span with font-size:0.
+      It is invisible on screen but included when the user selects & copies text.
+    */
+    .hidden {
+      font-size: 0;
+      user-select: text;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+    }
+
+    /* Answer area */
+    .answer-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: stretch;
+      margin-bottom: 1.2rem;
+    }
+
+    .answer-input {
+      flex: 1;
+      background: #0d0f1a;
+      border: 1px solid #2d3148;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: #f1f5f9;
+      font-size: 1rem;
+      font-family: "Fira Code", monospace;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .answer-input:focus {
+      border-color: #7c3aed;
+    }
+
+    .answer-input.correct {
+      border-color: #22c55e;
+      background: #0a1f12;
+    }
+
+    .answer-input.wrong {
+      border-color: #ef4444;
+      background: #1f0a0a;
+    }
+
+    .check-btn {
+      background: #7c3aed;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.4rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .check-btn:hover  { background: #6d28d9; }
+    .check-btn:active { transform: scale(0.97); }
+
+    .feedback {
+      font-size: 0.9rem;
+      min-height: 1.2rem;
+      padding: 0 0.1rem;
+      transition: color 0.2s;
+    }
+
+    .feedback.correct { color: #4ade80; }
+    .feedback.wrong   { color: #f87171; }
+
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">Coding Challenge</div>
+    <h1>What is the final value of <code style="color:#a78bfa">result</code>?</h1>
+    <p class="subtitle">
+      Read the code carefully and determine the output.
+    </p>
+
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+        <span class="code-lang">swift</span>
+      </div>
+      <pre><span class="kw">var</span> <span class="var">result</span> <span class="op">=</span> <span class="num">0</span>
+<span class="kw">for</span> <span class="var">x</span> <span class="kw">in</span> [<span class="num">3</span>, <span class="num">3</span>, <span class="num">5</span>] {
+    <span class="kw">if</span> <span class="var">x</span> <span class="op">><span class="hidden">=</span></span> <span class="num">3</span> {
+        <span class="var">result</span> <span class="op">=</span> <span class="var">result</span> <span class="op">-</span> <span class="var">x</span>
+    } <span class="kw">else</span> {
+        <span class="var">result</span> <span class="op">=</span> <span class="var">result</span> <span class="op">+</span> <span class="var">x</span>
+    }
+}</pre>
+    </div>
+
+    <p class="question">Enter the final value of <code style="color:#a78bfa">result</code>:</p>
+
+    <div class="answer-row">
+      <input
+        id="ans"
+        class="answer-input"
+        type="text"
+        placeholder=""
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button class="check-btn" onclick="checkAnswer()">Check</button>
+    </div>
+
+    <div id="feedback" class="feedback"></div>
+
+  </div>
+
+  <script>
+    // The page visually shows: if x > 3
+    // But the HTML contains a hidden "=" (font-size:0 span), so copy-pasting
+    // reveals: if x >= 3
+    //
+    // Careful readers trace the VISUAL code; copy-pasters run the hidden version.
+    // Let's trace both:
+    //   Visual code shows: if x > 3  →  only x=5 passes
+    //     iteration 1: x=3, 3>3 false → result = 0+3 = 3
+    //     iteration 2: x=3, 3>3 false → result = 3+3 = 6
+    //     iteration 3: x=5, 5>3 true  → result = 6-5 = 1
+    //   Visual answer: 1
+    //
+    //   Copy-paste code shows: if x >= 3 → all pass
+    //     iteration 1: x=3, 3>=3 true  → result = 0-3  = -3
+    //     iteration 2: x=3, 3>=3 true  → result = -3-3 = -6
+    //     iteration 3: x=5, 5>=3 true  → result = -6-5 = -11
+    //   Copy-paste answer: -11
+    //
+    // The "correct" answer for a reader who does NOT copy-paste is 1.
+    // The "wrong" answer for someone who copies is -11.
+
+    const CORRECT = 1;        // what a careful reader sees
+    const TRAP    = -11;      // what a copy-paster gets
+
+    function checkAnswer() {
+      const raw = document.getElementById("ans").value.trim();
+      const val = parseInt(raw, 10);
+      const input = document.getElementById("ans");
+      const fb = document.getElementById("feedback");
+
+      if (isNaN(val)) {
+        fb.textContent = "Please enter a number.";
+        fb.className = "feedback wrong";
+        input.className = "answer-input wrong";
+        return;
+      }
+
+      if (val === CORRECT) {
+        fb.textContent = "✓ Correct! You read the code — you didn't just copy it.";
+        fb.className = "feedback correct";
+        input.className = "answer-input correct";
+      } else if (val === TRAP) {
+        fb.textContent = "✗ That's the copy-paste answer. Try reading the code directly.";
+        fb.className = "feedback wrong";
+        input.className = "answer-input wrong";
+      } else {
+        fb.textContent = "✗ Not quite — look more carefully at the condition.";
+        fb.className = "feedback wrong";
+        input.className = "answer-input wrong";
+      }
+    }
+
+    document.getElementById("ans").addEventListener("keydown", e => {
+      if (e.key === "Enter") checkAnswer();
+    });
+  </script>
+</body>
+</html>
